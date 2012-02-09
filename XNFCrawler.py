@@ -9,7 +9,7 @@ import os
 import networkx as nx
 
 '''
-This scripts goes through 
+This scripts goes through ... (Lacking description)
 
 '''
 
