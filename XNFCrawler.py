@@ -3,9 +3,15 @@
 import sys
 import urllib2
 import HTMLParser
-import BeautifulSoup as BeautifulSoup
+from BeautifulSoup import BeautifulSoup
 import HTMLParser
+import os
 import networkx as nx
+
+'''
+This scripts goes through 
+
+'''
 
 
 def printUsage():
@@ -61,7 +67,7 @@ while depth < MAX_DEPTH:
         print "will try to open "+item
         try:
             page = urllib2.urlopen(item)
-        except urllib2.URLError:
+        except (urllib2.URLError, ValueError):
             print 'Failed to fetch ' + item
             continue
         
@@ -78,7 +84,30 @@ while depth < MAX_DEPTH:
             g.add_node(item)
             print "node was added: "+item
         
+        print "Number of anchor_tags stumbled upon: "+str(len(anchorTags))+ " for item: "+item    
+        for a in anchorTags: 
+            if a.has_key('rel'):
+                if len(set(a['rel'].split()) & XNF_TAGS) > 0:
+                    friend_url = a['href']
+                    try:
+                        g.add_edge(item, friend_url)
+                        g[item][friend_url]['label'] = a['rel'].encode('utf-8')
+                        g.node[friend_url]['label'] = a.contents[0].encode('utf-8')
+                    except (TypeError, IndexError) as e:
+                        print e
+                   
+                    #print "Could not put node or item for "+ friend_url
+                    next_queue.append(friend_url)
+                    
+if not os.path.isdir('out'):
+    os.mkdir('out')
+
+try:
+    nx.drawing.write_dot(g, os.path.join('out', OUT))
+except ImportError, e:
+    print "Could not write"
+   
         
-        print "Number of anchor_tags stumbled upon: "+str(len(anchorTags))+ "for item: "+item
+
 
 
