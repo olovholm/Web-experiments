@@ -1,3 +1,0 @@
-# olovholm lastFM API info
-API_KEY = "d5d8a20883001732dbc192a9437426f9"
-API_SECRET = "394918a34bd36ab68a56ebbcfe37fd92"
