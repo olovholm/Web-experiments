@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import urllib2
-from BeautifulSoup import BeautifulSoup as bs
 import re
 import HTMLParser
 
